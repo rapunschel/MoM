@@ -13,12 +13,13 @@ public class ClientPlayer : NetworkBehaviour
     private bool moveTargetChanged = false;
 
     public GameObject joystick;
-    private float runSpeed = 0.1f;
-
+    private float speed = 2f;
+    private float rotationSpeed = 720f;
     private Vector3 joyMove;
     private float dirX;
     private float dirZ;
 
+    private Animator animator;
     public override void OnStartClient()
     {
         // Tell our object to be our own colour when it spawns so we can recognize it
@@ -27,13 +28,14 @@ public class ClientPlayer : NetworkBehaviour
             // The very first time we create a random colour to keep using when spawning new objects
             if (firstTime)
             {
+                animator = GetComponent<Animator>();
                 ourColour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
                 firstTime = false;
                 // Create the joystick and place it in the canvas
                 joystick = Instantiate(joystick, new Vector3(256, 256, 0), Quaternion.identity,
                 GameObject.FindGameObjectWithTag("joystickCanvas").transform);
                 // Place player at fixed coordinates in beginning
-                UpdatePosition(new Vector3(723, 233, 0));
+                UpdatePosition(new Vector3(733, 233, 0));
             }
 
             // Tell everyone about it through the SyncVar that we have authority over
@@ -70,14 +72,36 @@ public class ClientPlayer : NetworkBehaviour
 
             dirX = joystick.GetComponent<FixedJoystick>().Horizontal;
             dirZ = joystick.GetComponent<FixedJoystick>().Vertical;
-            if (dirX != 0 || dirZ != 0)
+            Vector3 movementDirection = new Vector3(dirX, 0, dirZ);
+            movementDirection.Normalize();
+            transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
+
+            if (movementDirection != Vector3.zero)
             {
-                joyMove = this.GetComponent<Rigidbody>().position;
-                joyMove.x = this.GetComponent<Rigidbody>().position.x + dirX * runSpeed;
-                joyMove.z = this.GetComponent<Rigidbody>().position.z + dirZ * runSpeed;
-                CmdSetMoveTarget(joyMove);
-                this.GetComponent<Rigidbody>().MovePosition(joyMove);
+                animator.SetBool("IsMoving", true);
+                Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+                CmdSetMoveTarget(this.GetComponent<Rigidbody>().position);
+                Debug.Log("Transform : " + transform);
+                Debug.Log(this.GetComponent<Rigidbody>().position);
             }
+            else
+            {
+                animator.SetBool("IsMoving", false);
+            }
+
+
+            /*
+                    if (dirX != 0 || dirZ != 0)
+                    {
+                        joyMove = this.GetComponent<Rigidbody>().position;
+                        joyMove.x = this.GetComponent<Rigidbody>().position.x + dirX * runSpeed;
+                        joyMove.z = this.GetComponent<Rigidbody>().position.z + dirZ * runSpeed;
+                        CmdSetMoveTarget(joyMove);
+                        this.GetComponent<Rigidbody>().MovePosition(joyMove);
+                    }
+                    */
         }
     }
 
