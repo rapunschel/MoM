@@ -185,7 +185,7 @@ MonoBehaviour:
   playerSpawnMethod: 1
   spawnPrefabs:
   - {fileID: 7355064248260246877, guid: 019d01962db8a3848a13f312a815fc5f, type: 3}
-  - {fileID: 2873574338075905310, guid: 4d1baa0ff95367b9fb26c8cf89ba7436, type: 3}
+  - {fileID: 6529221307465098406, guid: f47f20c82a0e17846837d99bd315001f, type: 3}
   bootstrapSceneBuildIndex: 2
   errorSceneBuildIndex: 1
 --- !u!114 &422158498
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a863b02c269405cb40e54653d61094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minRequirement: 1
+  minRequirement: 2
   initialJoinTimeout: 5
 --- !u!114 &422158499
 MonoBehaviour:
