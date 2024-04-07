@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
-
+using FischlWorks_FogWar;
 public class GameBehaviour : CITEPlayer
 {
     public GameObject serverBasedTestObject;
     public GameObject clientPlayerObject;
-    private GameObject clientCube;
+    private GameObject clientPlayer;
+    private csFogWar.FogRevealer fogRevealer;
 
     // Start is called before the first frame update
     public override void OnStartLocalPlayer()
@@ -23,7 +24,17 @@ public class GameBehaviour : CITEPlayer
 
         if (hasAuthority)
         {
-            CmdCreateClientControlledTestObject(new Vector3(0, 0, 0));
+            // TODO change starting position to use transform | Maybe place player heroes on map then find and spawn?
+            CmdCreateClientControlledPlayerObject(new Vector3(0, 0, 0));
+
+            // Retrieve the script 
+            csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
+
+            // Create a fogrevealer
+            fogRevealer = new csFogWar.FogRevealer(clientPlayer.GetComponent<Transform>(), 2, true);
+
+            // Use script to add fogRevealer
+            script.AddFogRevealer(fogRevealer);
         }
     }
 
@@ -36,7 +47,7 @@ public class GameBehaviour : CITEPlayer
     {
         Debug.Log("Creating a test object");
 
-        GameObject testThing = Instantiate(serverBasedTestObject, new Vector3(clientCube.transform.position.x, clientCube.transform.position.y, clientCube.transform.position.z), Quaternion.identity);
+        GameObject testThing = Instantiate(serverBasedTestObject, new Vector3(clientPlayer.transform.position.x, clientPlayer.transform.position.y, clientPlayer.transform.position.z), Quaternion.identity);
         testThing.GetComponent<Rigidbody>().isKinematic = false; // We simulate everything on the server so only be kinematic on the clients
         testThing.GetComponent<Rigidbody>().velocity = new Vector3(5, 0, 5);
 
@@ -44,19 +55,20 @@ public class GameBehaviour : CITEPlayer
         NetworkServer.Spawn(testThing);
     }
 
+
     /**
         A client can request that the server spawns an object that the client can control directly
     */
     [Command]
-    public void CmdCreateClientControlledTestObject(Vector3 initialPosition)
+    public void CmdCreateClientControlledPlayerObject(Vector3 initialPosition)
     {
-        Debug.Log("Creating a test object for " + connectionToClient + " to control");
-        GameObject testThing = Instantiate(clientPlayerObject, initialPosition, Quaternion.identity);
+        Debug.Log("Creating a player object for " + connectionToClient + " to control");
+        GameObject clientP = Instantiate(clientPlayerObject, initialPosition, Quaternion.identity);
 
         // Tell everyone about it and hand it over to the client who asked for it
-        NetworkServer.Spawn(testThing, connectionToClient);
+        NetworkServer.Spawn(clientP, connectionToClient);
 
-        clientCube = testThing;
+        clientPlayer = clientP;
     }
 
     public void Update()

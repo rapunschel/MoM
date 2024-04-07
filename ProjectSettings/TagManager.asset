@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - joystickCanvas
+  - FogOfWar
   layers:
   - Default
   - TransparentFX
