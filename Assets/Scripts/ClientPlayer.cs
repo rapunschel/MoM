@@ -29,18 +29,17 @@ public class ClientPlayer : NetworkBehaviour
             if (firstTime)
             {
                 animator = GetComponent<Animator>();
-                ourColour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+                // ourColour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
                 firstTime = false;
                 // Create the joystick and place it in the canvas
                 joystick = Instantiate(joystick, new Vector3(256, 256, 0), Quaternion.identity,
                 GameObject.FindGameObjectWithTag("joystickCanvas").transform);
-                // Place player at fixed coordinates in beginning
-                UpdatePosition(new Vector3(733, 233, 0));
+
             }
 
             // Tell everyone about it through the SyncVar that we have authority over
             // This triggers OnColourChanged for everyone
-            CmdPleaseChangeMyColour(ourColour);
+            //  CmdPleaseChangeMyColour(ourColour);
         }
     }
 

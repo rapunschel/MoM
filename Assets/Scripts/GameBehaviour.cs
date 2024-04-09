@@ -24,14 +24,12 @@ public class GameBehaviour : CITEPlayer
 
         if (hasAuthority)
         {
-            // TODO change starting position to use transform | Maybe place player heroes on map then find and spawn?
-            CmdCreateClientControlledPlayerObject(new Vector3(0, 0, 0));
-
+            CmdCreateClientControlledPlayerObject(GameObject.FindWithTag("player" + playerID).GetComponent<Transform>().position);
             // Retrieve the script 
             csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
 
             // Create a fogrevealer
-            fogRevealer = new csFogWar.FogRevealer(clientPlayer.GetComponent<Transform>(), 2, true);
+            fogRevealer = new csFogWar.FogRevealer(clientPlayer.GetComponent<Transform>(), 1, true);
 
             // Use script to add fogRevealer
             script.AddFogRevealer(fogRevealer);
