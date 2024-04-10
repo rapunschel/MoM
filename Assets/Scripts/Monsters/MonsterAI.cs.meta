@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Scripts/Monsters/MonsterAI.cs.meta
 guid: 9f7d1ad0ef7760046ac86d647700ea62
+========
+guid: ce59cdfb58c428a4dadd3d7e233087d9
+>>>>>>>> Stashed changes:Assets/Scripts/EnemyScripts/MonsterAI.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
