@@ -5,19 +5,49 @@ using UnityEngine.AI;
 
 public class NavigationAI : MonoBehaviour
 {
-    public GameObject theDestination;
-    NavMeshAgent theAgent;
+    //public GameObject theDestination;
+    GameObject player;
+    NavMeshAgent agent;
+
+    [SerializeField] LayerMask groundLayer, playerLayer;
+
+    //patrol
+    Vector3 destPoint;
+    bool walkpointSet;
+    [SerializeField] float range;
 
     void Start()
     {
-        theAgent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
+        player = GameObject.Find("Player");
         
     }
 
     
     void Update()
     {
-        theAgent.SetDestination(theDestination.transform.position);
+        //agent.SetDestination(theDestination.transform.position);
+        Patrol();
         
+    }
+
+    void Patrol()
+    {
+        if (!walkpointSet) SearchForDest();
+        if (walkpointSet) agent.SetDestination(destPoint);
+        if (Vector3.Distance(transform.position, destPoint) < 10) walkpointSet = false;
+    }
+
+    void SearchForDest()
+    {
+        float z = Random.Range(-range, range);
+        float x = Random.Range(-range, range);
+
+        destPoint = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+
+        if (Physics.Raycast(destPoint, Vector3.down, groundLayer))
+        {
+            walkpointSet = true;
+        }
     }
 }
