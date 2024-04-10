@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-
 public class ClientPlayer : NetworkBehaviour
 {
     [SyncVar(hook = "OnColourChanged")] public Color theColour; // all objects have a colour set by their owner
@@ -23,7 +22,7 @@ public class ClientPlayer : NetworkBehaviour
     public override void OnStartClient()
     {
         // Tell our object to be our own colour when it spawns so we can recognize it
-        if (hasAuthority)
+        if (isOwned)
         {
             // The very first time we create a random colour to keep using when spawning new objects
             if (firstTime)
@@ -66,7 +65,7 @@ public class ClientPlayer : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hasAuthority)
+        if (isOwned)
         {
 
             dirX = joystick.GetComponent<FixedJoystick>().Horizontal;

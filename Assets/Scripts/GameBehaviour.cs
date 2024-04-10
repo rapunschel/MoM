@@ -22,7 +22,7 @@ public class GameBehaviour : CITEPlayer
             helper.setView(playerID);
         }
 
-        if (hasAuthority)
+        if (isOwned)
         {
             CmdCreateClientControlledPlayerObject(GameObject.FindWithTag("player" + playerID).GetComponent<Transform>().position);
             // Retrieve the script 
@@ -71,7 +71,7 @@ public class GameBehaviour : CITEPlayer
 
     public void Update()
     {
-        if (hasAuthority)
+        if (isOwned)
         {
             if (Input.GetKeyUp("space"))
             {

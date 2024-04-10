@@ -88,7 +88,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6528516425968718240}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &1479244570
+--- !u!54 &-4575935902457903060
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,10 +99,10 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 116
+  m_Interpolate: 1
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &1479244571
 CapsuleCollider:
@@ -173,9 +173,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 0
+  _assetId: 1730291837
   serverOnly: 0
-  visible: 0
-  m_AssetId: f47f20c82a0e17846837d99bd315001f
+  visibility: 0
   hasSpawned: 0
 --- !u!114 &1113519705574370528
 MonoBehaviour:
@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7623651f6b6a9f80db926867da3c68fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
   theColour: {r: 0, g: 0, b: 0, a: 0}
