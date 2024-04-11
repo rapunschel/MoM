@@ -16,6 +16,10 @@ public class NavigationAI : MonoBehaviour
     bool walkpointSet;
     [SerializeField] float range;
 
+    //State change
+    [SerializeField] float sightRange, attackRange;
+    bool playerInSight, playerInAttackRange;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -26,9 +30,23 @@ public class NavigationAI : MonoBehaviour
     
     void Update()
     {
-        //agent.SetDestination(theDestination.transform.position);
-        Patrol();
+        playerInSight = Physics.CheckSphere(transform.position, sightRange, playerLayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+
+        if(!playerInSight && !playerInAttackRange) Patrol();
+        if (playerInSight && !playerInAttackRange) Chase();
+        if (playerInSight && playerInAttackRange) Attack();
         
+    }
+
+    void Chase()
+    {
+        agent.SetDestination(player.transform.position);
+    }
+
+    void Attack()
+    {
+
     }
 
     void Patrol()
