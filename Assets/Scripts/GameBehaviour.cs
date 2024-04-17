@@ -9,7 +9,6 @@ public class GameBehaviour : CITEPlayer
     public GameObject serverBasedTestObject;
     public GameObject clientPlayerObject;
     private GameObject clientPlayer;
-    private csFogWar.FogRevealer fogRevealer;
 
     // Start is called before the first frame update
     public override void OnStartLocalPlayer()
@@ -25,14 +24,6 @@ public class GameBehaviour : CITEPlayer
         if (isOwned)
         {
             CmdCreateClientControlledPlayerObject(GameObject.FindWithTag("player" + playerID).GetComponent<Transform>().position);
-            // Retrieve the script 
-            csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
-
-            // Create a fogrevealer
-            fogRevealer = new csFogWar.FogRevealer(clientPlayer.GetComponent<Transform>(), 1, true);
-
-            // Use script to add fogRevealer
-            script.AddFogRevealer(fogRevealer);
         }
     }
 
@@ -48,7 +39,6 @@ public class GameBehaviour : CITEPlayer
         GameObject testThing = Instantiate(serverBasedTestObject, new Vector3(clientPlayer.transform.position.x, clientPlayer.transform.position.y, clientPlayer.transform.position.z), Quaternion.identity);
         testThing.GetComponent<Rigidbody>().isKinematic = false; // We simulate everything on the server so only be kinematic on the clients
         testThing.GetComponent<Rigidbody>().velocity = new Vector3(5, 0, 5);
-
         // Tell everyone about this new shiny object
         NetworkServer.Spawn(testThing);
     }
@@ -62,7 +52,7 @@ public class GameBehaviour : CITEPlayer
     {
         Debug.Log("Creating a player object for " + connectionToClient + " to control");
         GameObject clientP = Instantiate(clientPlayerObject, initialPosition, Quaternion.identity);
-
+        
         // Tell everyone about it and hand it over to the client who asked for it
         NetworkServer.Spawn(clientP, connectionToClient);
 

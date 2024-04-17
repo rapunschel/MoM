@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-
+using FischlWorks_FogWar;
 public class ClientPlayer : NetworkBehaviour
 {
     [SyncVar(hook = "OnColourChanged")] public Color theColour; // all objects have a colour set by their owner
@@ -10,11 +10,11 @@ public class ClientPlayer : NetworkBehaviour
     private static bool firstTime = true;
     private Vector3 moveTarget;
     private bool moveTargetChanged = false;
-
+    private bool isFogInitiated = false;
     public GameObject joystick;
     private float speed = 2f;
     private float rotationSpeed = 720f;
-    private Vector3 joyMove;
+
     private float dirX;
     private float dirZ;
 
@@ -74,6 +74,8 @@ public class ClientPlayer : NetworkBehaviour
             movementDirection.Normalize();
             transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
 
+            initializeFogRevealers();
+
             if (movementDirection != Vector3.zero)
             {
                 animator.SetBool("IsMoving", true);
@@ -81,25 +83,35 @@ public class ClientPlayer : NetworkBehaviour
 
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
                 CmdSetMoveTarget(this.GetComponent<Rigidbody>().position);
-                Debug.Log("Transform : " + transform);
-                Debug.Log(this.GetComponent<Rigidbody>().position);
             }
             else
             {
                 animator.SetBool("IsMoving", false);
             }
+        }
+    }
 
+    private void initializeFogRevealers() 
+    {   
+        if (isFogInitiated) 
+        {
+            return;
+        }
+        
+        int counter = 0;
+        foreach (GameObject go  in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            counter++;
+        }
 
-            /*
-                    if (dirX != 0 || dirZ != 0)
-                    {
-                        joyMove = this.GetComponent<Rigidbody>().position;
-                        joyMove.x = this.GetComponent<Rigidbody>().position.x + dirX * runSpeed;
-                        joyMove.z = this.GetComponent<Rigidbody>().position.z + dirZ * runSpeed;
-                        CmdSetMoveTarget(joyMove);
-                        this.GetComponent<Rigidbody>().MovePosition(joyMove);
-                    }
-                    */
+        // If statement to prevent adding multiple fogrevealers for each player
+        if (counter == 4) {
+            foreach (GameObject player  in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
+                script.AddFogRevealer(new csFogWar.FogRevealer(player.transform, 2, true));
+            }
+            isFogInitiated = true;
         }
     }
 
