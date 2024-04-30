@@ -302,7 +302,9 @@ namespace Mirror
                 Debug.LogWarning("Can't stop server as no server was active");
             }
         }
+        public override void ServerSend(int n, ArraySegment<byte> segment, int b) {
 
+        }
 #if MIRROR_26_0_OR_NEWER 
         public override void ServerSend(int connectionId, ArraySegment<byte> segment, int channelId)
         {
@@ -316,11 +318,11 @@ namespace Mirror
             server.SendOne(connectionId, deliveryMethod, segment);
         }
 #else
-        public override bool ServerSend(System.Collections.Generic.List<int> connectionIds, int channelId, ArraySegment<byte> segment)
+        public  bool ServerSend(System.Collections.Generic.List<int> connectionIds, int channelId, ArraySegment<byte> segment)
         {
             if (server == null)
             {
-                logger.LogWarning("Can't send when Server is not active");
+               // logger.LogWarning("Can't send when Server is not active");
                 return false;
             }
 
