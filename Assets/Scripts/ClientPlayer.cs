@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using FischlWorks_FogWar;
+using UnityEngine.UI;
 public class ClientPlayer : NetworkBehaviour
 {
     [SyncVar(hook = "OnColourChanged")] public Color theColour; // all objects have a colour set by their owner
@@ -28,16 +29,22 @@ public class ClientPlayer : NetworkBehaviour
             if (firstTime)
             {
                 animator = GetComponent<Animator>();
+                // Color for player and joystick.
                 ourColour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
                 firstTime = false;
+
                 // Create the joystick and place it in the canvas
                 joystick = Instantiate(joystick, new Vector3(256, 256, 0), Quaternion.identity,
                 GameObject.FindGameObjectWithTag("joystickCanvas").transform);
+
+                // change color of joystick
+                joystick.GetComponent<Image>().color = ourColour;
+                joystick.transform.Find("Handle").gameObject.GetComponent<Image>().color = ourColour;
             }
 
             // Tell everyone about it through the SyncVar that we have authority over
             // This triggers OnColourChanged for everyone
-            CmdPleaseChangeMyColour(ourColour);
+            CmdSetPlayerColor(ourColour);
         }
     }
 
@@ -45,7 +52,7 @@ public class ClientPlayer : NetworkBehaviour
      * Ask the server to change the colour of the object
      */
     [Command]
-    public void CmdPleaseChangeMyColour(Color newColour)
+    public void CmdSetPlayerColor(Color newColour)
     {
         theColour = newColour;
     }
@@ -55,7 +62,6 @@ public class ClientPlayer : NetworkBehaviour
      */
     public void OnColourChanged(Color oldColor, Color newColour)
     {
-
         transform.Find("RPGHero").gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", newColour);
         Debug.Log("Find hero: " + transform.Find("RPGHero"));
     }
@@ -66,7 +72,6 @@ public class ClientPlayer : NetworkBehaviour
     {
         if (isOwned)
         {
-
             dirX = joystick.GetComponent<FixedJoystick>().Horizontal;
             dirZ = joystick.GetComponent<FixedJoystick>().Vertical;
             Vector3 movementDirection = new Vector3(dirX, 0, dirZ);
@@ -104,7 +109,7 @@ public class ClientPlayer : NetworkBehaviour
         }
 
         // If statement to prevent adding multiple fogrevealers for each player
-        if (counter == 2) {
+        if (counter == 4) {
             foreach (GameObject player  in GameObject.FindGameObjectsWithTag("Player"))
             {
                 csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
