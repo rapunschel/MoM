@@ -9,7 +9,6 @@ public class GameBehaviour : CITEPlayer
     public GameObject serverBasedTestObject;
     public GameObject clientPlayerObject;
     private GameObject clientPlayer;
-    private Color[] playerColors = {Color.green, Color.blue, Color.yellow, Color.red};
 
     // Start is called before the first frame update
     public override void OnStartLocalPlayer()
@@ -54,17 +53,9 @@ public class GameBehaviour : CITEPlayer
         Debug.Log("Creating a player object for " + connectionToClient + " to control");
 
         GameObject clientP = Instantiate(clientPlayerObject, initialPosition, Quaternion.identity);
-
-        // Set color for player using it's playerID
-        clientP.transform.Find("RPGHero").gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", playerColors[playerID]);
         
-
-
-        //clientP.FindObjectOfType<RPGHero>();
-        Debug.Log("");
         // Tell everyone about it and hand it over to the client who asked for it
         NetworkServer.Spawn(clientP, connectionToClient);
-
         clientPlayer = clientP;
     }
 

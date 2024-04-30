@@ -28,17 +28,16 @@ public class ClientPlayer : NetworkBehaviour
             if (firstTime)
             {
                 animator = GetComponent<Animator>();
-                // ourColour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+                ourColour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
                 firstTime = false;
                 // Create the joystick and place it in the canvas
                 joystick = Instantiate(joystick, new Vector3(256, 256, 0), Quaternion.identity,
                 GameObject.FindGameObjectWithTag("joystickCanvas").transform);
-
             }
 
             // Tell everyone about it through the SyncVar that we have authority over
             // This triggers OnColourChanged for everyone
-            //  CmdPleaseChangeMyColour(ourColour);
+            CmdPleaseChangeMyColour(ourColour);
         }
     }
 
@@ -56,9 +55,9 @@ public class ClientPlayer : NetworkBehaviour
      */
     public void OnColourChanged(Color oldColor, Color newColour)
     {
-        Material ourMaterial = new Material(Shader.Find("Standard"));
-        ourMaterial.color = newColour;
-        GetComponent<Renderer>().material = ourMaterial;
+
+        transform.Find("RPGHero").gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", newColour);
+        Debug.Log("Find hero: " + transform.Find("RPGHero"));
     }
 
 
