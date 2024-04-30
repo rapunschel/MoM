@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DIamond : MonoBehaviour
+public class Collecter : MonoBehaviour
 {
     public GameObject diamond;
-
-
     private void OnTriggerEnter(Collider other)
     {
         PlayerCollection playerCollection = other.GetComponent<PlayerCollection>();
@@ -14,12 +12,10 @@ public class DIamond : MonoBehaviour
 
         if (playerCollection != null)
         {
-            gameObject.SetActive(false);
-            playerMovement.speed = 1;
-            
+            playerCollection.DiamondCollected();
+            playerMovement.speed = 2;
+
         }
-        diamond.SetActive(true);
+        diamond.SetActive(false);
     }
-
-
 }
