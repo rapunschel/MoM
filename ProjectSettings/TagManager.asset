@@ -10,6 +10,7 @@ TagManager:
   - player1
   - player2
   - player3
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Navmesh
+  - Player
   - PostProcessing
   - 
   - 
