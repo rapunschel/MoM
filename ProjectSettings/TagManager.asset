@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - joystickCanvas
+  - FogOfWar
+  - player0
+  - player1
+  - player2
+  - player3
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -12,8 +18,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Navmesh
+  - Player
   - PostProcessing
   - 
   - 
