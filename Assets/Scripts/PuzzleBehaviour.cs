@@ -38,10 +38,12 @@ public class PuzzleBehaviour : NetworkBehaviour {
 
         // Check everyone
         bool everyoneReady = true;
+
+        /*
         foreach (PuzzleBehaviour participant in FindObjectsOfType<PuzzleBehaviour>()){
             if (!participant.wasReady) everyoneReady = false;
         }
-
+        */
         // If all are ready, inform the clients
         if (everyoneReady){
             foreach (PuzzleBehaviour participant in FindObjectsOfType<PuzzleBehaviour>()){
