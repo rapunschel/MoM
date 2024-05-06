@@ -5,16 +5,23 @@ using UnityEngine;
 public class Collecter : MonoBehaviour
 {
     public GameObject diamond;
+    public GameManager manager;
+    public int numberOfDiamonds;
     private void OnTriggerEnter(Collider other)
     {
         PlayerCollection playerCollection = other.GetComponent<PlayerCollection>();
         PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
 
-        if (playerCollection != null)
+        if (playerCollection != null && CarryDiamond.hasDiamond == true)
         {
             playerCollection.DiamondCollected();
             playerMovement.speed = 2;
+            CarryDiamond.hasDiamond = false;
 
+        }
+        if (PlayerCollection.NumberOfDiamonds == 2)
+        {
+            manager.CompleteLevel();
         }
         diamond.SetActive(false);
     }

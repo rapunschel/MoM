@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerCollection : MonoBehaviour
 {
-   public int NumberOfDiamonds {  get; private set; }
+    public static int NumberOfDiamonds;
 
    public UnityEvent<PlayerCollection> OnDiamondCollected;
 
