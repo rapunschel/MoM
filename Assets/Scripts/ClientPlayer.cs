@@ -23,7 +23,7 @@ public class ClientPlayer : NetworkBehaviour
     private Animator animator;
 
     private Vector3[] pos = {new Vector3(256, 1300),
-                            new Vector3(900, 1300),
+                            new Vector3(2000, 1300),
                             new Vector3(256,256),
                             new Vector3(2000, 256)
                             };
