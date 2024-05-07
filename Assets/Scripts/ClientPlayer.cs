@@ -13,6 +13,7 @@ public class ClientPlayer : NetworkBehaviour
     private bool moveTargetChanged = false;
     private bool isFogInitiated = false;
     public GameObject joystick;
+    private GameObject playerJoystick;
     private float speed = 2f;
     private float rotationSpeed = 720f;
 
@@ -20,6 +21,11 @@ public class ClientPlayer : NetworkBehaviour
     private float dirZ;
 
     private Animator animator;
+
+    private Vector3[] pos = {new Vector3(256, 580),
+                            new Vector3(900, 580),
+                            new Vector3(256,256),
+                            new Vector3(900, 256)};
     public override void OnStartClient()
     {
         // Tell our object to be our own colour when it spawns so we can recognize it
@@ -34,12 +40,16 @@ public class ClientPlayer : NetworkBehaviour
                 firstTime = false;
 
                 // Create the joystick and place it in the canvas
-                joystick = Instantiate(joystick, new Vector3(256, 256, 0), Quaternion.identity,
-                GameObject.FindGameObjectWithTag("joystickCanvas").transform);
+                foreach (Vector3 v in pos)
+                    {
+                    playerJoystick = Instantiate(joystick, v, Quaternion.identity,
+                    GameObject.FindGameObjectWithTag("joystickCanvas").transform);
+                }
+
 
                 // change color of joystick
-                joystick.GetComponent<Image>().color = ourColour;
-                joystick.transform.Find("Handle").gameObject.GetComponent<Image>().color = ourColour;
+                playerJoystick.GetComponent<Image>().color = ourColour;
+                playerJoystick.transform.Find("Handle").gameObject.GetComponent<Image>().color = ourColour;
             }
 
             // Tell everyone about it through the SyncVar that we have authority over
@@ -72,8 +82,8 @@ public class ClientPlayer : NetworkBehaviour
     {
         if (isOwned)
         {
-            dirX = joystick.GetComponent<FixedJoystick>().Horizontal;
-            dirZ = joystick.GetComponent<FixedJoystick>().Vertical;
+            dirX = playerJoystick.GetComponent<FixedJoystick>().Horizontal;
+            dirZ = playerJoystick.GetComponent<FixedJoystick>().Vertical;
             Vector3 movementDirection = new Vector3(dirX, 0, dirZ);
             movementDirection.Normalize();
             transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
