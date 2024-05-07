@@ -22,10 +22,11 @@ public class ClientPlayer : NetworkBehaviour
 
     private Animator animator;
 
-    private Vector3[] pos = {new Vector3(256, 580),
-                            new Vector3(900, 580),
+    private Vector3[] pos = {new Vector3(256, 1300),
+                            new Vector3(900, 1300),
                             new Vector3(256,256),
-                            new Vector3(900, 256)};
+                            new Vector3(2000, 256)
+                            };
     public override void OnStartClient()
     {
         // Tell our object to be our own colour when it spawns so we can recognize it
