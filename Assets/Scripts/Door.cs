@@ -5,7 +5,6 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     public Animator animator;
-    public Transform door;
 
     void Update()
     {
@@ -13,12 +12,11 @@ public class Door : MonoBehaviour
         {
             animator.SetBool("Activated", true);
         }
-        else 
+        else
         {
             animator.SetBool("Activated", false);
         }
-        
-
     }
-    
+
+
 }

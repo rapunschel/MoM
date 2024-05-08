@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class DoorOpen : MonoBehaviour
 {
-    public static bool buttonPushed;
+    public static bool buttonPushed = false;
     private void OnTriggerEnter(Collider other)
     {
         buttonPushed = true;
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        buttonPushed = false;
+    }
+
 }
