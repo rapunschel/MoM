@@ -22,11 +22,14 @@ public class ClientPlayer : NetworkBehaviour
 
     private Animator animator;
 
-    private Vector3[] pos = {new Vector3(256, 1300),
-                            new Vector3(2000, 1300),
+    public int playerID;
+    private Vector3[] joystickCoords = {new Vector3(256, 1300), // 1300
+                            new Vector3(1700, 1300), // 1700, 1300
                             new Vector3(256,256),
-                            new Vector3(2000, 256)
+                            new Vector3(1700, 256)
                             };
+    
+    private Color[] playerColors = {Color.green, Color.blue, Color.yellow ,Color.red};
     public override void OnStartClient()
     {
         // Tell our object to be our own colour when it spawns so we can recognize it
@@ -37,17 +40,13 @@ public class ClientPlayer : NetworkBehaviour
             {
                 animator = GetComponent<Animator>();
                 // Color for player and joystick.
-                ourColour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+                ourColour = playerColors[playerID];
                 firstTime = false;
 
                 // Create the joystick and place it in the canvas
-                foreach (Vector3 v in pos)
-                    {
-                    playerJoystick = Instantiate(joystick, v, Quaternion.identity,
-                    GameObject.FindGameObjectWithTag("joystickCanvas").transform);
-                }
-
-
+                playerJoystick = Instantiate(joystick, joystickCoords[playerID], Quaternion.identity,
+                GameObject.FindGameObjectWithTag("joystickCanvas").transform);
+                
                 // change color of joystick
                 playerJoystick.GetComponent<Image>().color = ourColour;
                 playerJoystick.transform.Find("Handle").gameObject.GetComponent<Image>().color = ourColour;

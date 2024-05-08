@@ -27,22 +27,6 @@ public class GameBehaviour : CITEPlayer
         }
     }
 
-    /**
-        A client can ask the server to spawn a test object that is controlled entirely by the
-        server and has the state of it broadcast to all of the clients
-    */
-    [Command]
-    public void CmdCreateServerControlledTestObject()
-    {
-        Debug.Log("Creating a test object");
-
-        GameObject testThing = Instantiate(serverBasedTestObject, new Vector3(clientPlayer.transform.position.x, clientPlayer.transform.position.y, clientPlayer.transform.position.z), Quaternion.identity);
-        testThing.GetComponent<Rigidbody>().isKinematic = false; // We simulate everything on the server so only be kinematic on the clients
-        testThing.GetComponent<Rigidbody>().velocity = new Vector3(5, 0, 5);
-        // Tell everyone about this new shiny object
-        NetworkServer.Spawn(testThing);
-    }
-
 
     /**
         A client can request that the server spawns an object that the client can control directly
@@ -52,22 +36,17 @@ public class GameBehaviour : CITEPlayer
     {
         Debug.Log("Creating a player object for " + connectionToClient + " to control");
 
-        GameObject clientP = Instantiate(clientPlayerObject, initialPosition, Quaternion.identity);
-        
+        clientPlayer = Instantiate(clientPlayerObject, initialPosition, Quaternion.identity);
+        clientPlayer.GetComponent<ClientPlayer>().playerID = playerID;
         // Tell everyone about it and hand it over to the client who asked for it
-        NetworkServer.Spawn(clientP, connectionToClient);
-        clientPlayer = clientP;
+        NetworkServer.Spawn(clientPlayer, connectionToClient);
     }
 
     public void Update()
     {
         if (isOwned)
         {
-            if (Input.GetKeyUp("space"))
-            {
-                CmdCreateServerControlledTestObject();
-            }
-            else if (Input.GetKeyUp("m"))
+            if (Input.GetKeyUp("m"))
             {
             }
         }
