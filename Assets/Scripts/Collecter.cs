@@ -6,6 +6,7 @@ public class Collecter : MonoBehaviour
 {
     public GameObject diamond;
     public GameManager manager;
+    public GameObject level;
     public int numberOfDiamonds;
     private void OnTriggerEnter(Collider other)
     {
@@ -19,9 +20,10 @@ public class Collecter : MonoBehaviour
             CarryDiamond.hasDiamond = false;
 
         }
-        if (PlayerCollection.NumberOfDiamonds == 2)
+        if (PlayerCollection.NumberOfDiamonds == numberOfDiamonds)
         {
-            manager.CompleteLevel();
+            level.SetActive(true);
+
         }
         diamond.SetActive(false);
     }
