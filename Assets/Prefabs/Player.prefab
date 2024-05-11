@@ -68,7 +68,7 @@ MonoBehaviour:
   playerID: -1
   serverBasedTestObject: {fileID: 7355064248260246877, guid: 019d01962db8a3848a13f312a815fc5f,
     type: 3}
-  clientPlayerObject: {fileID: 2873574338075905310, guid: 4d1baa0ff95367b9fb26c8cf89ba7436,
+  clientPlayerObject: {fileID: 6529221307465098406, guid: f47f20c82a0e17846837d99bd315001f,
     type: 3}
 --- !u!114 &213487478789674618
 MonoBehaviour:
