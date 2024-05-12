@@ -6,7 +6,6 @@ using UnityEngine.AI;
 
 public class DIamond : MonoBehaviour
 {
-    public GameObject diamond;
     private void OnTriggerEnter(Collider other)
     {
         PlayerCollection playerCollection = other.GetComponent<PlayerCollection>();
@@ -16,13 +15,6 @@ public class DIamond : MonoBehaviour
         if (playerCollection != null && CarryDiamond.hasDiamond == false)
         {
             gameObject.SetActive(false);
-            playerMovement.speed = 1;
-            diamond.SetActive(true);
-            CarryDiamond.hasDiamond = true;
-            
         }
-        
     }
-
-
 }

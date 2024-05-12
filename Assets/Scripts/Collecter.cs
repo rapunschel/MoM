@@ -1,30 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class Collecter : MonoBehaviour
 {
-    public GameObject diamond;
-    public GameManager manager;
     public GameObject level;
-    public int numberOfDiamonds;
+    public int Diamonds;
+    public UnityEvent<PlayerCollection> OndiamondCollected;
+    
+
     private void OnTriggerEnter(Collider other)
     {
         PlayerCollection playerCollection = other.GetComponent<PlayerCollection>();
-        PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
 
         if (playerCollection != null && CarryDiamond.hasDiamond == true)
         {
             playerCollection.DiamondCollected();
-            playerMovement.speed = 2;
-            CarryDiamond.hasDiamond = false;
-
         }
-        if (PlayerCollection.NumberOfDiamonds == numberOfDiamonds)
+
+        if (playerCollection.NumberOfDiamonds == Diamonds)
         {
             level.SetActive(true);
 
         }
-        diamond.SetActive(false);
     }
 }

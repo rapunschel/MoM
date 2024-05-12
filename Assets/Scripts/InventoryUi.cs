@@ -11,12 +11,12 @@ public class InventoryUi : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        diamondText= GetComponent<TextMeshProUGUI>();
+        diamondText = GetComponent<TextMeshProUGUI>();
         
     }
 
     public void UpdateDiamondText(PlayerCollection playerCollection)
     {
-        diamondText.text = PlayerCollection.NumberOfDiamonds.ToString();
+        diamondText.text = playerCollection.NumberOfDiamonds.ToString();
     }
 }

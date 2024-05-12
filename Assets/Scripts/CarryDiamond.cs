@@ -1,3 +1,4 @@
+using Mirror.Examples.Basic;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,13 +7,29 @@ using UnityEngine.Events;
 
 public class CarryDiamond : MonoBehaviour
 {
-    public GameObject diamond;
     public static bool hasDiamond;
 
     void Start()
     {
-        diamond.SetActive(false);
         hasDiamond = false;
+        gameObject.transform.GetChild(2).gameObject.SetActive(false);
     }
-   
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.transform.tag == "Gem")
+        {
+            gameObject.transform.GetChild(2).gameObject.SetActive(true);
+            hasDiamond = true;
+            //clientPlayer.speed = 1;
+            
+        }
+        if (other.transform.tag == "Collecter")
+        {
+            gameObject.transform.GetChild(2).gameObject.SetActive(false);
+            hasDiamond = false;
+        }
+    }
+
 }
