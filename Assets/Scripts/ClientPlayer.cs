@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
@@ -13,13 +13,16 @@ public class ClientPlayer : NetworkBehaviour
     private bool moveTargetChanged = false;
     private bool isFogInitiated = false;
     public GameObject joystick;
-    public float speed = 1f;
+    private float speed = 2f;
     private float rotationSpeed = 720f;
 
     private float dirX;
     private float dirZ;
 
     private Animator animator;
+    private PlayerHp playerHp;
+
+
     public override void OnStartClient()
     {
         // Tell our object to be our own colour when it spawns so we can recognize it
@@ -45,6 +48,7 @@ public class ClientPlayer : NetworkBehaviour
             // Tell everyone about it through the SyncVar that we have authority over
             // This triggers OnColourChanged for everyone
             CmdSetPlayerColor(ourColour);
+            
         }
     }
 
@@ -70,28 +74,38 @@ public class ClientPlayer : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isOwned)
-        {
-            dirX = joystick.GetComponent<FixedJoystick>().Horizontal;
-            dirZ = joystick.GetComponent<FixedJoystick>().Vertical;
-            Vector3 movementDirection = new Vector3(dirX, 0, dirZ);
-            movementDirection.Normalize();
-            transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
-
+        // create healthlog
+        playerHp = GetComponent<PlayerHp>();
+        if (isOwned & playerHp.isStone == false)
+        {   
+            joystickMovement();
+            // Set up fogrevealers, bad fix. Each client has to do this
             initializeFogRevealers();
+        }
+        else if (isOwned) {
+            animator.SetBool("IsMoving", false);
+        }
+    }
 
-            if (movementDirection != Vector3.zero)
-            {
-                animator.SetBool("IsMoving", true);
-                Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+    private void joystickMovement()
+    {
+        dirX = joystick.GetComponent<FixedJoystick>().Horizontal;
+        dirZ = joystick.GetComponent<FixedJoystick>().Vertical;
+        Vector3 movementDirection = new Vector3(dirX, 0, dirZ);
+        movementDirection.Normalize();
+        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
 
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-                CmdSetMoveTarget(this.GetComponent<Rigidbody>().position);
-            }
-            else
-            {
-                animator.SetBool("IsMoving", false);
-            }
+        if (movementDirection != Vector3.zero)
+        {
+            animator.SetBool("IsMoving", true);
+            Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            CmdSetMoveTarget(this.GetComponent<Rigidbody>().position);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
         }
     }
 
