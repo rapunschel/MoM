@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHp : MonoBehaviour
 {
@@ -118,6 +119,7 @@ public class PlayerHp : MonoBehaviour
             // Activate loss screen
 
             Debug.Log("All players are dead! Show loss screen.");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             //playerMovAndMore.
             // Show your loss screen UI or perform any other necessary actions.
         }
