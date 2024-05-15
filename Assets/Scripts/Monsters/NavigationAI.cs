@@ -35,7 +35,6 @@ public class NavigationAI : MonoBehaviour
 
         if(!playerInSight && !playerInAttackRange) Patrol();
         if (playerInSight && !playerInAttackRange) Chase();
-        if (playerInSight && playerInAttackRange) Attack();
         
     }
 
@@ -44,10 +43,6 @@ public class NavigationAI : MonoBehaviour
         agent.SetDestination(player.transform.position);
     }
 
-    void Attack()
-    {
-
-    }
 
     void Patrol()
     {
