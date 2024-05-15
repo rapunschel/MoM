@@ -8,6 +8,7 @@ public class NavigationAI : MonoBehaviour
     //public GameObject theDestination;
     GameObject player;
     NavMeshAgent agent;
+    public GameObject player1;
 
     [SerializeField] LayerMask groundLayer, playerLayer;
 
@@ -24,6 +25,7 @@ public class NavigationAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player");
+        player1 = GameObject.FindGameObjectWithTag("Player");
         
     }
 
@@ -40,7 +42,7 @@ public class NavigationAI : MonoBehaviour
 
     void Chase()
     {
-        agent.SetDestination(player.transform.position);
+        agent.SetDestination(player1.transform.position);
     }
 
 
