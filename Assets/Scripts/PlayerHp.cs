@@ -103,7 +103,7 @@ public class PlayerHp : MonoBehaviour
 
     void CheckStatus()
     {
-        bool allPlayersDead = true;
+        bool allPlayersDead = false;
         //Check if any player is still alive
         foreach (PlayerHp playerHp in allPlayersHp)
         {
