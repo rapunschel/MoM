@@ -22,7 +22,7 @@ public class ClientPlayer : NetworkBehaviour
 
     private Animator animator;
 
-    public int playerID;
+    [SyncVar] public int clientID = -1;
     private Vector3[] joystickCoords = {new Vector3(256, 1300), // 1300
                             new Vector3(1700, 1300), // 1700, 1300
                             new Vector3(256,256),
@@ -38,13 +38,14 @@ public class ClientPlayer : NetworkBehaviour
             // The very first time we create a random colour to keep using when spawning new objects
             if (firstTime)
             {
+                Debug.Log("On start client playerID: " + clientID);
                 animator = GetComponent<Animator>();
                 // Color for player and joystick.
-                ourColour = playerColors[playerID];
+                ourColour = playerColors[clientID];
                 firstTime = false;
 
                 // Create the joystick and place it in the canvas
-                playerJoystick = Instantiate(joystick, joystickCoords[playerID], Quaternion.identity,
+                playerJoystick = Instantiate(joystick, joystickCoords[clientID], Quaternion.identity,
                 GameObject.FindGameObjectWithTag("joystickCanvas").transform);
                 
                 // change color of joystick
@@ -73,7 +74,7 @@ public class ClientPlayer : NetworkBehaviour
     public void OnColourChanged(Color oldColor, Color newColour)
     {
         transform.Find("RPGHero").gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", newColour);
-        Debug.Log("Find hero: " + transform.Find("RPGHero"));
+        //Debug.Log("Find hero: " + transform.Find("RPGHero"));
     }
 
 

@@ -37,7 +37,7 @@ public class GameBehaviour : CITEPlayer
         Debug.Log("Creating a player object for " + connectionToClient + " to control");
 
         clientPlayer = Instantiate(clientPlayerObject, initialPosition, Quaternion.identity);
-        clientPlayer.GetComponent<ClientPlayer>().playerID = playerID;
+        clientPlayer.GetComponent<ClientPlayer>().clientID = playerID; //FindObjectOfType<CITENetworkManager>().GetPlayerID(connectionToClient);
         // Tell everyone about it and hand it over to the client who asked for it
         NetworkServer.Spawn(clientPlayer, connectionToClient);
     }
