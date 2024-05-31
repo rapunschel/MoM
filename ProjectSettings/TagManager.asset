@@ -11,6 +11,8 @@ TagManager:
   - player2
   - player3
   - Enemy
+  - Gem
+  - Collecter
   layers:
   - Default
   - TransparentFX
