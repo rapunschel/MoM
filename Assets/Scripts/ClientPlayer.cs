@@ -85,23 +85,12 @@ public class ClientPlayer : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-<<<<<<< HEAD
-        if (isOwned)
-        {
-            dirX = playerJoystick.GetComponent<FixedJoystick>().Horizontal;
-            dirZ = playerJoystick.GetComponent<FixedJoystick>().Vertical;
-            Vector3 movementDirection = new Vector3(dirX, 0, dirZ);
-            movementDirection.Normalize();
-            transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
-
-=======
         // create healthlog
         playerHp = GetComponent<PlayerHp>();
         if (isOwned & playerHp.isStone == false)
         {   
             joystickMovement();
             // Set up fogrevealers, bad fix. Each client has to do this
->>>>>>> main
             initializeFogRevealers();
         }
         else if (isOwned) {
@@ -145,7 +134,7 @@ public class ClientPlayer : NetworkBehaviour
         }
 
         // If statement to prevent adding multiple fogrevealers for each player
-        if (counter == 1) {
+        if (counter == 2) {
             foreach (GameObject player  in GameObject.FindGameObjectsWithTag("Player"))
             {
                 csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
