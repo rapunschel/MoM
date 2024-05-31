@@ -85,13 +85,14 @@ public class ClientPlayer : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Set up fogrevealers, bad fix. Each client has to do this
+        initializeFogRevealers();
+
         // create healthlog
         playerHp = GetComponent<PlayerHp>();
         if (isOwned & playerHp.isStone == false)
         {   
             joystickMovement();
-            // Set up fogrevealers, bad fix. Each client has to do this
-            initializeFogRevealers();
         }
         else if (isOwned) {
             animator.SetBool("IsMoving", false);
@@ -122,26 +123,28 @@ public class ClientPlayer : NetworkBehaviour
 
     private void initializeFogRevealers() 
     {   
-        if (isFogInitiated) 
-        {
-            return;
-        }
-        
-        int counter = 0;
-        foreach (GameObject go  in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            counter++;
-        }
-
-        // If statement to prevent adding multiple fogrevealers for each player
-        if (counter == 2) {
-            foreach (GameObject player  in GameObject.FindGameObjectsWithTag("Player"))
+        if (isOwned) {
+            if (isFogInitiated) 
             {
-                csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
-                script.AddFogRevealer(new csFogWar.FogRevealer(player.transform, 2, true));
+                return;
             }
-            isFogInitiated = true;
-        }
+            
+            int counter = 0;
+            foreach (GameObject go  in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                counter++;
+            }
+
+            // If statement to prevent adding multiple fogrevealers for each player
+            if (counter == 2) {
+                foreach (GameObject player  in GameObject.FindGameObjectsWithTag("Player"))
+                {
+                    csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
+                    script.AddFogRevealer(new csFogWar.FogRevealer(player.transform, 2, true));
+                }
+                isFogInitiated = true;
+            }
+         }
     }
 
     private void UpdatePosition(Vector3 inputPosition)
