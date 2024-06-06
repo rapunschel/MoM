@@ -23,8 +23,8 @@ public class ClientPlayer : NetworkBehaviour
     private Animator animator;
 
     [SyncVar] public int clientID = -1;
-    private Vector3[] joystickCoords = {new Vector3(256, 130), // 1300
-                            new Vector3(170, 130), // 1700, 1300
+    private Vector3[] joystickCoords = {new Vector3(256, 1300), // 1300
+                            new Vector3(170, 1300), // 1700, 1300
                             new Vector3(256,256),
                             new Vector3(1700, 256)
                             };
