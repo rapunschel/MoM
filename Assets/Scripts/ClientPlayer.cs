@@ -23,8 +23,8 @@ public class ClientPlayer : NetworkBehaviour
     private Animator animator;
 
     [SyncVar] public int clientID = -1;
-    private Vector3[] joystickCoords = {new Vector3(256, 1300), // 1300
-                            new Vector3(1700, 1300), // 1700, 1300
+    private Vector3[] joystickCoords = {new Vector3(256, 130), // 1300
+                            new Vector3(170, 130), // 1700, 1300
                             new Vector3(256,256),
                             new Vector3(1700, 256)
                             };
@@ -78,7 +78,6 @@ public class ClientPlayer : NetworkBehaviour
     public void OnColourChanged(Color oldColor, Color newColour)
     {
         transform.Find("RPGHero").gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", newColour);
-        //Debug.Log("Find hero: " + transform.Find("RPGHero"));
     }
 
 
@@ -101,8 +100,8 @@ public class ClientPlayer : NetworkBehaviour
 
     private void joystickMovement()
     {
-        dirX = joystick.GetComponent<FixedJoystick>().Horizontal;
-        dirZ = joystick.GetComponent<FixedJoystick>().Vertical;
+        dirX = playerJoystick.GetComponent<FixedJoystick>().Horizontal;
+        dirZ = playerJoystick.GetComponent<FixedJoystick>().Vertical;
         Vector3 movementDirection = new Vector3(dirX, 0, dirZ);
         movementDirection.Normalize();
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
@@ -123,12 +122,12 @@ public class ClientPlayer : NetworkBehaviour
 
     private void initializeFogRevealers() 
     {   
+        if (isFogInitiated) {
+            return;
+        }
+
+
         if (isOwned) {
-            if (isFogInitiated) 
-            {
-                return;
-            }
-            
             int counter = 0;
             foreach (GameObject go  in GameObject.FindGameObjectsWithTag("Player"))
             {
