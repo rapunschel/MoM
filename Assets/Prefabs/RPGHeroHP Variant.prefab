@@ -481,6 +481,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2768572515959298116, guid: c20397bf1592dc040b827e8716b0bd41,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768572515959298116, guid: c20397bf1592dc040b827e8716b0bd41,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c20397bf1592dc040b827e8716b0bd41, type: 3}
 --- !u!4 &6527817484537673476 stripped
@@ -653,6 +663,7 @@ MonoBehaviour:
   theColour: {r: 0, g: 0, b: 0, a: 0}
   joystick: {fileID: 2929252283123773939, guid: f6a44673f5518541892289c807f24f08,
     type: 3}
+  playerID: 0
 --- !u!114 &3521749479749606890
 MonoBehaviour:
   m_ObjectHideFlags: 0

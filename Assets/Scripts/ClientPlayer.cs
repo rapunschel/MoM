@@ -13,6 +13,7 @@ public class ClientPlayer : NetworkBehaviour
     private bool moveTargetChanged = false;
     private bool isFogInitiated = false;
     public GameObject joystick;
+    private GameObject playerJoystick;
     private float speed = 2f;
     private float rotationSpeed = 720f;
 
@@ -20,6 +21,15 @@ public class ClientPlayer : NetworkBehaviour
     private float dirZ;
 
     private Animator animator;
+
+    [SyncVar] public int clientID = -1;
+    private Vector3[] joystickCoords = {new Vector3(256, 1300), // 1300
+                            new Vector3(170, 1300), // 1700, 1300
+                            new Vector3(256,256),
+                            new Vector3(1700, 256)
+                            };
+    
+    private Color[] playerColors = {Color.green, Color.blue, Color.yellow ,Color.red};
     private PlayerHp playerHp;
 
 
@@ -31,18 +41,19 @@ public class ClientPlayer : NetworkBehaviour
             // The very first time we create a random colour to keep using when spawning new objects
             if (firstTime)
             {
+                Debug.Log("On start client playerID: " + clientID);
                 animator = GetComponent<Animator>();
                 // Color for player and joystick.
-                ourColour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+                ourColour = playerColors[clientID];
                 firstTime = false;
 
                 // Create the joystick and place it in the canvas
-                joystick = Instantiate(joystick, new Vector3(256, 256, 0), Quaternion.identity,
+                playerJoystick = Instantiate(joystick, joystickCoords[clientID], Quaternion.identity,
                 GameObject.FindGameObjectWithTag("joystickCanvas").transform);
-
+                
                 // change color of joystick
-                joystick.GetComponent<Image>().color = ourColour;
-                joystick.transform.Find("Handle").gameObject.GetComponent<Image>().color = ourColour;
+                playerJoystick.GetComponent<Image>().color = ourColour;
+                playerJoystick.transform.Find("Handle").gameObject.GetComponent<Image>().color = ourColour;
             }
 
             // Tell everyone about it through the SyncVar that we have authority over
@@ -67,20 +78,20 @@ public class ClientPlayer : NetworkBehaviour
     public void OnColourChanged(Color oldColor, Color newColour)
     {
         transform.Find("RPGHero").gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", newColour);
-        Debug.Log("Find hero: " + transform.Find("RPGHero"));
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        // Set up fogrevealers, bad fix. Each client has to do this
+        initializeFogRevealers();
+
         // create healthlog
         playerHp = GetComponent<PlayerHp>();
         if (isOwned & playerHp.isStone == false)
         {   
             joystickMovement();
-            // Set up fogrevealers, bad fix. Each client has to do this
-            initializeFogRevealers();
         }
         else if (isOwned) {
             animator.SetBool("IsMoving", false);
@@ -89,8 +100,8 @@ public class ClientPlayer : NetworkBehaviour
 
     private void joystickMovement()
     {
-        dirX = joystick.GetComponent<FixedJoystick>().Horizontal;
-        dirZ = joystick.GetComponent<FixedJoystick>().Vertical;
+        dirX = playerJoystick.GetComponent<FixedJoystick>().Horizontal;
+        dirZ = playerJoystick.GetComponent<FixedJoystick>().Vertical;
         Vector3 movementDirection = new Vector3(dirX, 0, dirZ);
         movementDirection.Normalize();
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
@@ -111,26 +122,28 @@ public class ClientPlayer : NetworkBehaviour
 
     private void initializeFogRevealers() 
     {   
-        if (isFogInitiated) 
-        {
+        if (isFogInitiated) {
             return;
         }
-        
-        int counter = 0;
-        foreach (GameObject go  in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            counter++;
-        }
 
-        // If statement to prevent adding multiple fogrevealers for each player
-        if (counter == 1) {
-            foreach (GameObject player  in GameObject.FindGameObjectsWithTag("Player"))
+
+        if (isOwned) {
+            int counter = 0;
+            foreach (GameObject go  in GameObject.FindGameObjectsWithTag("Player"))
             {
-                csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
-                script.AddFogRevealer(new csFogWar.FogRevealer(player.transform, 2, true));
+                counter++;
             }
-            isFogInitiated = true;
-        }
+
+            // If statement to prevent adding multiple fogrevealers for each player
+            if (counter == 4) {
+                foreach (GameObject player  in GameObject.FindGameObjectsWithTag("Player"))
+                {
+                    csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
+                    script.AddFogRevealer(new csFogWar.FogRevealer(player.transform, 2, true));
+                }
+                isFogInitiated = true;
+            }
+         }
     }
 
     private void UpdatePosition(Vector3 inputPosition)
