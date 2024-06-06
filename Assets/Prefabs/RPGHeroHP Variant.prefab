@@ -409,6 +409,10 @@ PrefabInstance:
       value: RPGHeroHP Variant
       objectReference: {fileID: 0}
     - target: {fileID: 1556040939566342, guid: c20397bf1592dc040b827e8716b0bd41, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1556040939566342, guid: c20397bf1592dc040b827e8716b0bd41, type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
@@ -663,7 +667,7 @@ MonoBehaviour:
   theColour: {r: 0, g: 0, b: 0, a: 0}
   joystick: {fileID: 2929252283123773939, guid: f6a44673f5518541892289c807f24f08,
     type: 3}
-  playerID: 0
+  clientID: -1
 --- !u!114 &3521749479749606890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,6 +712,20 @@ MonoBehaviour:
   OnDiamondCollected:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7452722818521784220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6529221307465098406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c262dabda17025949aa5e5b29b4ca5a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  rotaionSpeed: 720
 --- !u!95 &6615009214736878014 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 95922273507661854, guid: c20397bf1592dc040b827e8716b0bd41,
