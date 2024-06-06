@@ -135,7 +135,7 @@ public class ClientPlayer : NetworkBehaviour
             }
 
             // If statement to prevent adding multiple fogrevealers for each player
-            if (counter == 1) {
+            if (counter == 4) {
                 foreach (GameObject player  in GameObject.FindGameObjectsWithTag("Player"))
                 {
                     csFogWar script = GameObject.FindWithTag("FogOfWar").GetComponent<csFogWar>();
