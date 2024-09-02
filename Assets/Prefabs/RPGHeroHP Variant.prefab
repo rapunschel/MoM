@@ -409,6 +409,10 @@ PrefabInstance:
       value: RPGHeroHP Variant
       objectReference: {fileID: 0}
     - target: {fileID: 1556040939566342, guid: c20397bf1592dc040b827e8716b0bd41, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1556040939566342, guid: c20397bf1592dc040b827e8716b0bd41, type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
@@ -663,7 +667,7 @@ MonoBehaviour:
   theColour: {r: 0, g: 0, b: 0, a: 0}
   joystick: {fileID: 2929252283123773939, guid: f6a44673f5518541892289c807f24f08,
     type: 3}
-  playerID: 0
+  clientID: -1
 --- !u!114 &3521749479749606890
 MonoBehaviour:
   m_ObjectHideFlags: 0

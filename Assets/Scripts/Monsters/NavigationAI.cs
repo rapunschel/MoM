@@ -5,52 +5,114 @@ using UnityEngine.AI;
 
 public class NavigationAI : MonoBehaviour
 {
-    //public GameObject theDestination;
-    GameObject player;
     NavMeshAgent agent;
-    public GameObject player1;
+    public GameObject[] players;
 
     [SerializeField] LayerMask groundLayer, playerLayer;
 
-    //patrol
+    // Patrol
     Vector3 destPoint;
     bool walkpointSet;
     [SerializeField] float range;
 
-    //State change
+    // State change
     [SerializeField] float sightRange, attackRange;
     bool playerInSight, playerInAttackRange;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        player = GameObject.Find("Player");
-        player1 = GameObject.FindGameObjectWithTag("Player");
-        
+        //players = GameObject.FindGameObjectsWithTag("Player");
     }
 
-    
     void Update()
     {
-        playerInSight = Physics.CheckSphere(transform.position, sightRange, playerLayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerLayer);
+        // Check if any player is in sight or in attack range
+        players = GameObject.FindGameObjectsWithTag("Player");
+        playerInSight = false;
+        playerInAttackRange = false;
 
-        if(!playerInSight && !playerInAttackRange) Patrol();
-        if (playerInSight && !playerInAttackRange) Chase();
-        
+        foreach (GameObject player in players)
+        {
+            if (player == null) continue;
+
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            if (distanceToPlayer <= sightRange)
+            {
+                playerInSight = true;
+                break;
+            }
+            if (distanceToPlayer <= attackRange)
+            {
+                playerInAttackRange = true;
+                break;
+            }
+        }
+
+        if (!playerInSight && !playerInAttackRange)
+        {
+            Patrol();
+        }
+        if (playerInSight && !playerInAttackRange)
+        {
+            Chase();
+        }
     }
 
     void Chase()
     {
-        agent.SetDestination(player1.transform.position);
-    }
+        GameObject nearestPlayer = null;
+        float shortestDistance = Mathf.Infinity;
 
+        foreach (GameObject player in players)
+        {
+            if (player == null) continue;
+
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < shortestDistance)
+            {
+                shortestDistance = distance;
+                nearestPlayer = player;
+            }
+        }
+
+        if (nearestPlayer != null)
+        {
+            NavMeshPath path = new NavMeshPath();
+            if (agent.CalculatePath(nearestPlayer.transform.position, path) && path.status == NavMeshPathStatus.PathComplete)
+            {
+                agent.SetDestination(nearestPlayer.transform.position);
+                Debug.Log("Chasing player at position: " + nearestPlayer.transform.position);
+            }
+            else
+            {
+                Debug.LogWarning("Path to player is not complete or invalid");
+            }
+        }
+    }
 
     void Patrol()
     {
         if (!walkpointSet) SearchForDest();
-        if (walkpointSet) agent.SetDestination(destPoint);
-        if (Vector3.Distance(transform.position, destPoint) < 10) walkpointSet = false;
+        if (walkpointSet)
+        {
+            NavMeshPath path = new NavMeshPath();
+            if (agent.CalculatePath(destPoint, path) && path.status == NavMeshPathStatus.PathComplete)
+            {
+                agent.SetDestination(destPoint);
+                Debug.Log("Patrolling to point: " + destPoint);
+            }
+            else
+            {
+                walkpointSet = false;
+                Debug.LogWarning("Path to patrol point is not complete or invalid");
+            }
+        }
+
+        if (Vector3.Distance(transform.position, destPoint) < 2f)
+        {
+            walkpointSet = false;
+        }
     }
 
     void SearchForDest()
@@ -58,11 +120,19 @@ public class NavigationAI : MonoBehaviour
         float z = Random.Range(-range, range);
         float x = Random.Range(-range, range);
 
-        destPoint = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+        Vector3 randomPoint = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+        NavMeshHit hit;
 
-        if (Physics.Raycast(destPoint, Vector3.down, groundLayer))
+        if (NavMesh.SamplePosition(randomPoint, out hit, range, NavMesh.AllAreas))
         {
+            destPoint = hit.position;
             walkpointSet = true;
+            Debug.Log("New patrol destination set: " + destPoint);
+        }
+        else
+        {
+            walkpointSet = false;
+            Debug.LogWarning("Invalid patrol destination: " + randomPoint);
         }
     }
 }
