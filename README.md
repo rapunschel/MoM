@@ -1,4 +1,22 @@
 # Maze of Mysteries: a collocated collaboration game for children 
+
+
+## Table of Contents
+
+- [Maze of Mysteries: a collocated collaboration game for children](#maze-of-mysteries-a-collocated-collaboration-game-for-children)
+  - [Table of Contents](#table-of-contents)
+  - [Development](#development)
+  - [How to Install](#how-to-install)
+    - [Hardware Required](#hardware-required)
+    - [How to Deploy the Game to iPads](#how-to-deploy-the-game-to-ipads)
+  - [Gameplay](#gameplay)
+    - [Controls](#controls)
+    - [Game Mechanics](#game-mechanics)
+    - [Setup of game \& iPads](#setup-of-game--ipads)
+    - [Known bugs](#known-bugs)
+  - [Future work](#future-work)
+  - [Gallery](#gallery)
+  
 Developed as a group project for a bachelor's thesis at Gothenburg/Chalmers University, **Maze of Mysteries** is a collaboration game designed for children. The game belongs to the 4-in-1 genre, where players must work together to overcome challenges and clear the game. The focus is on fostering teamwork and problem-solving in a fun, interactive way.
 
 <p align = "center">
