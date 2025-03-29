@@ -48,7 +48,7 @@ Follow the guide on how to build an iOS application in Unity:
 [Build an iOS Application](https://docs.unity3d.com/Manual/iphone-BuildProcess.html?utm_source)
 
 ## Gameplay
-- Currently only one well designed maze is available.
+Currently only one well designed maze is available.
 
 <p align = "center">
 <img src="images/maze.png" width="75%" />
